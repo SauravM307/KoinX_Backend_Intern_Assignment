@@ -25,9 +25,10 @@ exports.deleteData = async () => {
   }
 };
 exports.fetchAndStore = async () => {
-  const response = await axios.get(
-    "https://api.coingecko.com/api/v3/coins/list"
-  );
+  const url =
+    "https://api.coingecko.com/api/v3/coins/list?&x_cg_demo_api_key=YOUR_API_KEY";
+  const req_url = url.replace("YOUR_API_KEY", process.env.COINGECKO_API_KEY);
+  const response = await axios.get(req_url);
   const cryptocurrencies = response.data.map(({ id, name }) => ({ id, name }));
   const result = await Crypto.insertMany(cryptocurrencies);
   console.log(result);

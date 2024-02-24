@@ -11,26 +11,24 @@ exports.priceInTermsOf = async (req, res) => {
       });
     }
     // Make request to Coingecko API to fetch historical price data for fromCurrency
-    const fromCurrencyResponse = await axios.get(
-      `https://api.coingecko.com/api/v3/coins/${fromCurrency}/history`,
-      {
-        params: {
-          date,
-          localization: false,
-        },
-      }
-    );
+    const url = `https://api.coingecko.com/api/v3/coins/${fromCurrency}/history?&x_cg_demo_api_key=YOUR_API_KEY`;
+    url.replace("YOUR_API_KEY", process.env.COINGECKO_API_KEY);
+    const fromCurrencyResponse = await axios.get(url, {
+      params: {
+        date,
+        localization: false,
+      },
+    });
 
     // sending request to Coingecko API to fetch historical price data for toCurrency
-    const toCurrencyResponse = await axios.get(
-      `https://api.coingecko.com/api/v3/coins/${toCurrency}/history`,
-      {
-        params: {
-          date,
-          localization: false,
-        },
-      }
-    );
+    url = `https://api.coingecko.com/api/v3/coins/${toCurrency}/history?&x_cg_demo_api_key=YOUR_API_KEY`;
+    const req_url = url.replace("YOUR_API_KEY", process.env.COINGECKO_API_KEY);
+    const toCurrencyResponse = await axios.get(req_url, {
+      params: {
+        date,
+        localization: false,
+      },
+    });
 
     // Extracting prices from responses
     const fromCurrencyPrice =

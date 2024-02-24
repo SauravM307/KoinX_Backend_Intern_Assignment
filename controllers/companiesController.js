@@ -13,9 +13,10 @@ exports.getAllCompanies = async (req, res) => {
       });
     }
     //Sending request to CoinGecko's API to fetch list of companies
-    const response = await axios.get(
-      `https://api.coingecko.com/api/v3/companies/public_treasury/${currency}`
-    );
+    const url = `https://api.coingecko.com/api/v3/companies/public_treasury/${currency}?&x_cg_demo_api_key=YOUR_API_KEY`;
+    const req_url = url.replace("YOUR_API_KEY", process.env.COINGECKO_API_KEY);
+    // console.log(req_url);
+    const response = await axios.get(req_url);
     //Extracting the list of the companies from the response body
     const companies = response.data.companies.map(
       (companies) => companies.name
