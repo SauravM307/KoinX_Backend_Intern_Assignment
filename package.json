@@ -2,7 +2,7 @@
   "name": "koinx-assignment",
   "version": "1.0.0",
   "description": "Preparing the assignment for backend internship",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
     "start:prod": "NODE_ENV=production nodemon server.js"

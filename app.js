@@ -24,6 +24,7 @@ schedule.scheduleJob("0 * * * *", async () => {
   await scheduleScript.connect();
   await scheduleScript.deleteData();
   await scheduleScript.fetchAndStore();
+  console.log("DATABASE SUCCESFULLY UPDATED!");
 });
 //SERVER ROUTES
 app.use("/api/v1/price", priceRouter);
