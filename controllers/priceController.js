@@ -3,17 +3,30 @@ const axios = require("axios");
 exports.priceInTermsOf = async (req, res) => {
   try {
     // Extract parameters from request
-    const { fromCurrency, toCurrency, date } = req.body;
+    let { fromCurrency, toCurrency, date } = req.body;
+    let f, t, d;
     // console.log(date);
     if (!fromCurrency || !toCurrency || !date) {
-      return res.status(400).json({
-        error: "Missing parameters. Required: fromCurrency, toCurrency, date",
-      });
+      const { fromCurrency, toCurrency, date } = req.query;
+
+      if (!fromCurrency || !toCurrency || !date)
+        return res.status(400).json({
+          error: "Missing parameters. Required: fromCurrency, toCurrency, date",
+        });
+      f = fromCurrency;
+      t = toCurrency;
+      d = date;
     }
+    if (f) {
+      fromCurrency = f;
+      toCurrency = t;
+      date = d;
+    }
+
     // Make request to Coingecko API to fetch historical price data for fromCurrency
-    const url = `https://api.coingecko.com/api/v3/coins/${fromCurrency}/history?&x_cg_demo_api_key=YOUR_API_KEY`;
-    url.replace("YOUR_API_KEY", process.env.COINGECKO_API_KEY);
-    const fromCurrencyResponse = await axios.get(url, {
+    let url = `https://api.coingecko.com/api/v3/coins/${fromCurrency}/history?&x_cg_demo_api_key=YOUR_API_KEY`;
+    let req_url = url.replace("YOUR_API_KEY", process.env.COINGECKO_API_KEY);
+    const fromCurrencyResponse = await axios.get(req_url, {
       params: {
         date,
         localization: false,
@@ -22,7 +35,7 @@ exports.priceInTermsOf = async (req, res) => {
 
     // sending request to Coingecko API to fetch historical price data for toCurrency
     url = `https://api.coingecko.com/api/v3/coins/${toCurrency}/history?&x_cg_demo_api_key=YOUR_API_KEY`;
-    const req_url = url.replace("YOUR_API_KEY", process.env.COINGECKO_API_KEY);
+    req_url = url.replace("YOUR_API_KEY", process.env.COINGECKO_API_KEY);
     const toCurrencyResponse = await axios.get(req_url, {
       params: {
         date,
